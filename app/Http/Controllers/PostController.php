@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index','show']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderby('id','desc')->paginate(10);
         return view('posts.index',['posts' => $posts]);
     }
 
@@ -37,14 +43,18 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title'=>'required |min:3 ',
-            'content'=>'required | min:10'
+            'title'=>'required|min:3',
+            'content'=>'required|min:10'
         ]);
-       return 'dhaka';
+        
         Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
+            'title'=>$request->title,
+            
+            'content'=>$request->content,
         ]);
+        return redirect(route('posts.index'));
+      
+        
     }
 
     /**
@@ -66,7 +76,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+    return view('posts.edit',compact('post'));
     }
 
     /**
@@ -78,7 +88,12 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post->title=$request->title;
+        $post->content=$request->content;
+        $post->save();
+        session()->flash('message','Post atualizado com  sucesso ');
+        return redirect()->back();
+
     }
 
     /**
@@ -89,6 +104,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect(route('posts.index'));
     }
 }

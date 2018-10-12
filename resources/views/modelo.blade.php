@@ -15,15 +15,24 @@
     </head>
     <body>
     <div class="bg-info text-white p-5 mb-3" >
-        <a href="{{route('posts.index')}}" class=" bnt btn-secondary">Home</a>
-        <a href="{{route('posts.create')}}" class=" bnt btn-secondary" >Create Post</a>
-
+        <a href="{{route('posts.index')}}" class=" btn btn-secondary">Home</a>
+        <a href="{{route('posts.create')}}" class=" btn btn-secondary" >Create Post</a>
+        <a href="{{route('login')}}" class="btn btn-secondary">Logar</a>
+        
+        @auth
+        <form class="d-inline-block float-right" action="{{route('logout')}}" method="post">
+        @csrf
+            <button class="btn btn-secondary"> {{auth()->user()->name}} |-| Logout</button>
+        </form>
+        @else
+          
+        @endauth
     </div>
     <div class="container ">
         @yield('content')
     </div>
 <div class="bg-dark text-white p-4 text-center">
-    ALL rights reserved Yourname {{date('Y')}}.
+   Feito  por Maxwell Ululu sempre atualizado  {{date("d/m/Y")}}
 
 </div>
 

@@ -1,14 +1,14 @@
 @extends('modelo')
 @section('content')
-   <h1 class >Add  New Post</h1>
+   <h1 class>Add  New Post</h1>
 
-{{--   @if($errors->all())
-    <div class="alert alert-danger">
-    <li> Your erro nao attualizado </li>
-    </div>
-    @foreach($errors->all()as $error)
-        @endforeach
-    @endif--}}
+@if($errors->all())
+        <div class="alert alert-danger">
+    @foreach ($errors->all() as $error)
+    <li>{{$error}}</li>
+    @endforeach
+        </div>
+@endif
    <form action="{{route('posts.store')}}" method="post">
        @csrf
          <div class="form group">
